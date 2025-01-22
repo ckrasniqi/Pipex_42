@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/22 16:43:11 by ckrasniq          #+#    #+#             */
+/*   Updated: 2025/01/22 16:43:15 by ckrasniq         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 void	child_process(char **av, int *fd, char **envp)
@@ -13,7 +25,14 @@ void	child_process(char **av, int *fd, char **envp)
 
 void	parent_process(char **av, int *fd, char **envp)
 {
-	int	file_out
+	int	file_out = open(av[4], O_RDONLY, O_CREAT, O_TRUNC, 0777);
+
+	if (file_out == -1)
+		error();
+	dup2(fd[1], STDIN_FILENO);
+	dup2(file_out, STDOUT_FILENO);
+	close(fd[1]);
+	execute(av[3], envp);
 }
 
 int main(int ac, char **av, char **envp)
