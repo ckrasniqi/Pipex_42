@@ -1,12 +1,20 @@
 #include "pipex.h"
 
-void	child_process(char **av, int fd, char **envp)
+void	child_process(char **av, int *fd, char **envp)
 {
-	int file_in = open(av[1], O_RDONLY, 0777);
+	int	file_in = open(av[1], O_RDONLY, 0777);
 	if (file_in == -1)
 		error();
+	dup2(fd[1], STDOUT_FILENO);
+	dup2(file_in, STDIN_FILENO);
+	close(fd[0]);
+	execute(av[2], envp);
 }
 
+void	parent_process(char **av, int *fd, char **envp)
+{
+	int	file_out
+}
 
 int main(int ac, char **av, char **envp)
 {
