@@ -6,36 +6,41 @@
 #    By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 16:46:44 by ckrasniq          #+#    #+#              #
-#    Updated: 2025/01/22 16:47:27 by ckrasniq         ###   ########.fr        #
+#    Updated: 2025/01/22 16:51:22 by ckrasniq         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	pipex
+NAME		= pipex
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+MAKE_LIB 	= ar -rcs
 
-SRCS			=	pipex.c \
-					utils.c \
+LIBFT_DIR	=	./libft
+LIBFT		=	$(LIBFT_DIR)/libft.a
+SRC 		=	pipex.c \
+				utils.c \
 
-OBJECTS			= $(SRCS:.c=.o)
+OBJ 		= 	$(SRC:.c=.o)
 
+all: $(NAME)
 
-COMPILING		= cc
-RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror -I.
+$(NAME): $(OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) -o $@ $(OBJ) -L$(LIBFT_DIR) -lft
 
-all:			$(NAME)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME):		$(OBJECTS)
-				ar rcs $(NAME) $(OBJECTS)
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
-				$(RM) $(OBJECTS)
+	rm -f $(OBJ)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
-fclean:			clean
-				$(RM) $(NAME)
+fclean: clean
+	rm -f $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
-re:				fclean $(NAME)
+re: fclean all
 
-bonus:			$(OBJECTS)
-				ar rcs $(NAME) $(OBJECTS)
-
-.PHONY:			all clean fclean re
+.PHONY: all clean fclean re

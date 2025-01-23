@@ -6,7 +6,7 @@
 /*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:47:47 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/01/22 16:48:35 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/01/23 21:23:37 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,22 @@
 # define PIPEX_H
 
 # include "libft/libft.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <string.h>
-# include <stdio.h>
-# include <sys/wait.h>
 # include <fcntl.h>
-
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 // Pipex
-void	child_process(char **av, int *fd, char **envp);
-void	parent_process(char **av, int *fd, char **envp);
+pid_t	execute_second_cmd(char *cmd, char *av, char **envp);
+void	execute_first_cmd(char *av, char **envp);
+int		infile_redirect(char *av);
 
 // Utilities
 void	error(void);
 void	free_string_arr(char **arr);
-char	*extract_path(char **envp);
 char	*find_path(char *cmd, char **envp);
 void	execute(char *av, char **envp);
-
 
 #endif
